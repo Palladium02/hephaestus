@@ -32,13 +32,22 @@ class Hephaestus {
     });
 
     request.on("end", () => {
-      // let [uri , querystring] = url.split("?") | ["", ""];
-      // TODO: parse query parameters like /?test=test
-      let { callback, parameter, error } = Routes.getCallback(url, method);
+      let urlParts = url.split("?");
+      let queryParameter = {};
+      if (urlParts[1]) {
+        queryParameter = Object.fromEntries(
+          urlParts[1].split("&").map((pairs) => pairs.split("="))
+        );
+      }
+      let { callback, parameter, error } = Routes.getCallback(
+        urlParts[0],
+        method
+      );
       let _request = new Request(
         request,
         parseBody(body, request.headers["content-type"] || ""),
-        parameter
+        parameter,
+        queryParameter
       );
       let _response = new Response(response);
       callback(_request, _response);
@@ -50,13 +59,6 @@ class Hephaestus {
   }
 
   public async boot(port: number = 80) {
-    // let config = await import(`${this._rootDir}\\.rapidrc.js`);
-
-    // this._events.config();
-    // config?.routes.forEach(async (route: string) => {
-    //   await import(`${this._rootDir + route}`);
-    // });
-
     this._events.boot();
     this._server = http.createServer(async (request, response) => {
       await this._listener(request, response);

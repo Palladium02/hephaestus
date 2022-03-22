@@ -10,8 +10,13 @@ declare class Request {
     parameter: {
         [key: string]: string;
     };
+    queryParameter: {
+        [key: string]: string;
+    };
     url: string;
     constructor(IncomingMessage: http.IncomingMessage, body: any, parameter: {
+        [key: string]: string;
+    }, queryParamater: {
         [key: string]: string;
     });
 }

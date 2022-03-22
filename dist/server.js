@@ -37,10 +37,13 @@ class Hephaestus {
                 body.push(chunk);
             });
             request.on("end", () => {
-                // let [uri , querystring] = url.split("?") | ["", ""];
-                // TODO: parse query parameters like /?test=test
-                let { callback, parameter, error } = Routes_1.Routes.getCallback(url, method);
-                let _request = new Request_1.Request(request, (0, Body_1.parseBody)(body, request.headers["content-type"] || ""), parameter);
+                let urlParts = url.split("?");
+                let queryParameter = {};
+                if (urlParts[1]) {
+                    queryParameter = Object.fromEntries(urlParts[1].split("&").map((pairs) => pairs.split("=")));
+                }
+                let { callback, parameter, error } = Routes_1.Routes.getCallback(urlParts[0], method);
+                let _request = new Request_1.Request(request, (0, Body_1.parseBody)(body, request.headers["content-type"] || ""), parameter, queryParameter);
                 let _response = new Response_1.Response(response);
                 callback(_request, _response);
             });
@@ -51,11 +54,6 @@ class Hephaestus {
     }
     boot(port = 80) {
         return __awaiter(this, void 0, void 0, function* () {
-            // let config = await import(`${this._rootDir}\\.rapidrc.js`);
-            // this._events.config();
-            // config?.routes.forEach(async (route: string) => {
-            //   await import(`${this._rootDir + route}`);
-            // });
             this._events.boot();
             this._server = http_1.default.createServer((request, response) => __awaiter(this, void 0, void 0, function* () {
                 yield this._listener(request, response);

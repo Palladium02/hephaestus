@@ -21,7 +21,6 @@ class Router {
       NOT_FOUND: {
         "404": {
           callback: (request, response) => {
-            // console.log("Not Found");
             response.status(404).send("Page not found.");
           },
         },
@@ -142,7 +141,6 @@ class Router {
 
   public static(dir: string, path: string) {
     let files = fs.readdirSync(dir + path);
-    console.log(files);
     files.forEach((file) => {
       if (file.split(".").length === 2) {
         let route = (path + "\\" + file).replace(/\\/g, "/");
