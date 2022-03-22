@@ -35,4 +35,4 @@ equal to an array of buffers (the received chunks of data).
 ## Cookies
 
 Available through `request.cookies`. Gives you access to the cookies send to the
-server. You can read more about cookies [here]().
+server. You can read more about cookies [here](https://github.com/Palladium02/hephaestus/blob/main/docs/cookies.md).

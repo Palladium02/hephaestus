@@ -59,7 +59,7 @@ const hephaestus = new Hephaestus();
 hephaestus.boot();
 ```
 
-### [Routes](https://githb.com/Palladium02/hephaestus/blob/main/docs/routing.md)
+### [Routes](https://github.com/Palladium02/hephaestus/blob/main/docs/routing.md)
 
 To allow your users to visit different pages you need to have different routes.
 You can use the `Routes` instance to create mappings between a route and
@@ -85,13 +85,13 @@ const hephaestus = new Hephaestus();
 hephaestus.boot();
 ```
 
-### [Request](https://githb.com/Palladium02/hephaestus/blob/main/docs/requests.md)
+### [Request](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
 
 Everytime a user makes a request to your server a request object will be created.
 This request object holds the most important information you need as a developer.
 For example the headers, the body and much more.
 
-### [Response](https://githb.com/Palladium02/hephaestus/blob/main/docs/response.md)
+### [Response](https://github.com/Palladium02/hephaestus/blob/main/docs/response.md)
 
 A webserver needs to be able to send responses. And exactly for that matter there
 is the response object.
