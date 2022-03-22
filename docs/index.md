@@ -4,7 +4,7 @@ Welcome to the in depth explantion of Hephaestus. This is where your jurney begi
 
 ## Table of contents
 
-- [Routing](https://githb.com/Palladium02/hephaestus/blob/main/docs/routing.md)
-- [Requests](https://githb.com/Palladium02/hephaestus/blob/main/docs/requests.md)
-- [Responses](https://githb.com/Palladium02/hephaestus/blob/main/docs/response.md)
-- [Cookies](https://githb.com/Palladium02/hephaestus/blob/main/docs/cookies.md)
+- [Routing](https://github.com/Palladium02/hephaestus/blob/main/docs/routing.md)
+- [Requests](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
+- [Responses](https://github.com/Palladium02/hephaestus/blob/main/docs/response.md)
+- [Cookies](https://github.com/Palladium02/hephaestus/blob/main/docs/cookies.md)
