@@ -14,7 +14,8 @@ also is a small (13kB) library for creating webserver.
 <br>
 The following README you will try to teach you the basics of this library but
 if you are interested behind almost every subheading is a link to a more in depth
-explanation of the given topic. [This]() will bring you to the start of the journey.
+explanation of the given topic.
+[This](https://github.com/Palladium02/hephaestus/blob/main/docs/index.md) will bring you to the start of the journey.
 
 ## Requirements
 
