@@ -1,6 +1,6 @@
 # Hephaestus in depth
 
-Welcome to the in depth explantion of Hephaestus. This is where your jurney begins.
+Welcome to the in depth explanation of Hephaestus. This is where your journey begins.
 
 ## Table of contents
 

@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Request = void 0;
 const Cookies_1 = require("./Cookies");
 class Request {
-    constructor(IncomingMessage, body, parameter, queryParamater) {
-        this._IncomminMessage = IncomingMessage;
-        this.headers = this._IncomminMessage.headers;
+    constructor(IncomingMessage, body, parameter, queryParameter) {
+        this._IncommingMessage = IncomingMessage;
+        this.headers = this._IncommingMessage.headers;
         this.cookies = Cookies_1.Cookie.parse(this.headers);
         this.body = body;
-        this.parameter = parameter;
-        this.queryParameter = queryParamater;
-        this.url = this._IncomminMessage.url || "";
+        this.params = parameter;
+        this.query = queryParameter;
+        this.url = this._IncommingMessage.url || "";
     }
 }
 exports.Request = Request;

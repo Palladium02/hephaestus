@@ -9,12 +9,12 @@
 
 ## Introduction
 
-What is Hephaestos? Appart from being the greek god of blacksmiths, Hephaestus
+What is Hephaestus? Apart from being the greek god of blacksmiths, Hephaestus
 also is a small (13kB) library for creating webserver.
 <br>
 The following README you will try to teach you the basics of this library but
 if you are interested behind almost every subheading is a link to a more in depth
-explantion of the given topic. [This]() will bring you to the start of the jurney.
+explanation of the given topic. [This]() will bring you to the start of the journey.
 
 ## Requirements
 
@@ -49,14 +49,13 @@ Hephaestus ships with built-in type declarations.
 ### The entry point
 
 The following snippet shows you how to create a Hephaestus instance and how
-to start the server.
+to start the server. The server starts on port 80 by default. You can change that
+behavior by passing in a valid port into the boot method.
 
 ```ts
 import { Hephaestus } from "hephaestus";
 
-const hephaestus = new Hephaestus();
-
-hephaestus.boot();
+Hephaestus.boot();
 ```
 
 ### [Routes](https://github.com/Palladium02/hephaestus/blob/main/docs/routing.md)
@@ -68,26 +67,24 @@ a function that will be called when that specific route is triggered.
 ```ts
 import { Routes } from "hephaestus";
 
-Routes.get("/", (request, response) => {
+Routes.get("/", ({ request, response }) => {
   response.status(200).send("Hello World!");
 });
 ```
 
-You can define routes whereever you want. If you do not define your routes in
+You can define routes where ever you want. If you do not define your routes in
 the entry point file you need to import the route file(s) into it.
 
 ```ts
 import { Hephaestus } from "hephaestus";
 import "./routes.ts";
 
-const hephaestus = new Hephaestus();
-
-hephaestus.boot();
+Hephaestus.boot();
 ```
 
 ### [Request](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
 
-Everytime a user makes a request to your server a request object will be created.
+Every time a user makes a request to your server a request object will be created.
 This request object holds the most important information you need as a developer.
 For example the headers, the body and much more.
 

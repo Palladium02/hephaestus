@@ -1,5 +1,11 @@
 import { Request } from "./Request";
 import { Response } from "./Response";
+import { HephaestusServer } from "./Server";
+declare type HttpContract = {
+    request: Request;
+    response: Response;
+    application: HephaestusServer;
+};
 declare type HttpVerb = "GET" | "POST" | "PUT" | "NOT_FOUND";
 declare class Router {
     private _table;
@@ -11,13 +17,13 @@ declare class Router {
             [key: string]: string;
         };
         error: string | null;
-        callback: (request: Request, response: Response) => any;
+        callback: (httpContract: HttpContract) => any;
     };
-    get(route: string, callback: (request: Request, response: Response) => any): void;
-    post(route: string, callback: (request: Request, response: Response) => any): void;
-    put(route: string, callback: (request: Request, response: Response) => any): void;
-    notFound(callback: (request: Request, response: Response) => any): void;
-    static(dir: string, path: string): void;
+    get(route: string, callback: (httpContract: HttpContract) => any): void;
+    post(route: string, callback: (httpContract: HttpContract) => any): void;
+    put(route: string, callback: (httpContract: HttpContract) => any): void;
+    notFound(callback: (httpContract: HttpContract) => any): void;
+    static(dir: string, path?: string): void;
 }
 export declare const Routes: Router;
 export { HttpVerb };

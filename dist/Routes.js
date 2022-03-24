@@ -13,8 +13,8 @@ class Router {
             PUT: {},
             NOT_FOUND: {
                 "404": {
-                    callback: (request, response) => {
-                        response.status(404).send("Page not found.");
+                    callback: (httpContract) => {
+                        httpContract.response.status(404).send("Page not found.");
                     },
                 },
             },
@@ -107,13 +107,13 @@ class Router {
     notFound(callback) {
         this._table.NOT_FOUND["404"].callback = callback;
     }
-    static(dir, path) {
+    static(dir, path = "") {
         let files = fs_1.default.readdirSync(dir + path);
         files.forEach((file) => {
             if (file.split(".").length === 2) {
                 let route = (path + "\\" + file).replace(/\\/g, "/");
-                this.get(route, (req, res) => {
-                    res.status(200).send(fs_1.default.readFileSync(dir + path + "\\" + file));
+                this.get(route, ({ request, response }) => {
+                    response.status(200).send(fs_1.default.readFileSync(dir + path + "\\" + file));
                 });
             }
             else {

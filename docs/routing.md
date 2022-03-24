@@ -12,7 +12,7 @@ Routes.get("/", (request, response) => {
 });
 ```
 
-You can define routes whereever you want. If you do not define your routes in
+You can define routes where ever you want. If you do not define your routes in
 the entry point file you need to import the route file(s) into it.
 
 ```ts
@@ -55,7 +55,9 @@ behavior for an not found route.
 Routes.notFound(async () => {});
 ```
 
-Each callback has to take two parameter the [request]() and [response]() object.
+Each callback has to takes one parameter the HttpContract containing the [request](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
+and [response](https://github.com/Palladium02/hephaestus/blob/main/docs/response.md) object and
+also the application itself.
 
 ## Route parameter
 
@@ -64,10 +66,10 @@ With route parameters you can register dynamic routes.
 When adding a parameter prefix it with a `:`.
 
 ```ts
-Routes.get("/:id", (request, response) => {
+Routes.get("/:id", ({ request, response }) => {
   /**
    * GET /1 HTTP/1.1 will result in
-   * request.parameter.id => "1"
+   * request.params.id => "1"
    */
 });
 ```
@@ -79,3 +81,5 @@ as many as you like.
 
 Queryparameter are another way to pass data to the server. These parameters will
 be parsed by the server and the values will be available to you.
+The queryparameter are available through the `.query` property on the request
+object.

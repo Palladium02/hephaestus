@@ -1,6 +1,6 @@
 # Requests
 
-Everytime a user makes a request to your server a request object will be created.
+Every time a user makes a request to your server a request object will be created.
 This request object holds the most important information you need as a developer.
 For example the headers, the body and much more.
 
@@ -15,7 +15,7 @@ For example you have a route definition as follows and a request that send to
 `/users/1`
 
 ```ts
-Routes.get("/users/:id", (request, _) => {
+Routes.get("/users/:id", ({ request }) => {
   console.log(request.parameter.id); // will log "1"
 });
 ```

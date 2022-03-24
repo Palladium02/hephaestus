@@ -1,11 +1,17 @@
 import fs from "fs";
 import { Request } from "./Request";
 import { Response } from "./Response";
+import { HephaestusServer } from "./Server";
 
+type HttpContract = {
+  request: Request;
+  response: Response;
+  application: HephaestusServer;
+};
 type HttpVerb = "GET" | "POST" | "PUT" | "NOT_FOUND";
 type RouteTree = {
   [key: string]: {
-    callback?: (request: Request, response: Response) => any;
+    callback?: (httpContract: HttpContract) => any;
     children?: RouteTree;
   };
 };
@@ -20,8 +26,8 @@ class Router {
       PUT: {},
       NOT_FOUND: {
         "404": {
-          callback: (request, response) => {
-            response.status(404).send("Page not found.");
+          callback: (httpContract: HttpContract) => {
+            httpContract.response.status(404).send("Page not found.");
           },
         },
       },
@@ -31,7 +37,7 @@ class Router {
   private _addRoute(
     route: string,
     method: HttpVerb,
-    callback: (request: Request, response: Response) => any
+    callback: (httpContract: HttpContract) => any
   ) {
     let parts = this._getParts(route);
     let current = this._table[method]!;
@@ -72,7 +78,7 @@ class Router {
   ): {
     parameter: { [key: string]: string };
     error: string | null;
-    callback: (request: Request, response: Response) => any;
+    callback: (httpContract: HttpContract) => any;
   } {
     let parts = this._getParts(route);
     let current = this._table[method]!;
@@ -114,39 +120,30 @@ class Router {
     return { parameter, callback: current[last].callback!, error: null };
   }
 
-  public get(
-    route: string,
-    callback: (request: Request, response: Response) => any
-  ) {
+  public get(route: string, callback: (httpContract: HttpContract) => any) {
     this._addRoute(route, "GET", callback);
   }
 
-  public post(
-    route: string,
-    callback: (request: Request, response: Response) => any
-  ) {
+  public post(route: string, callback: (httpContract: HttpContract) => any) {
     this._addRoute(route, "POST", callback);
   }
 
-  public put(
-    route: string,
-    callback: (request: Request, response: Response) => any
-  ) {
+  public put(route: string, callback: (httpContract: HttpContract) => any) {
     this._addRoute(route, "PUT", callback);
   }
 
-  public notFound(callback: (request: Request, response: Response) => any) {
+  public notFound(callback: (httpContract: HttpContract) => any) {
     this._table.NOT_FOUND["404"].callback = callback;
   }
 
-  public static(dir: string, path: string) {
+  public static(dir: string, path: string = "") {
     let files = fs.readdirSync(dir + path);
     files.forEach((file) => {
       if (file.split(".").length === 2) {
         let route = (path + "\\" + file).replace(/\\/g, "/");
 
-        this.get(route, (req, res) => {
-          res.status(200).send(fs.readFileSync(dir + path + "\\" + file));
+        this.get(route, ({ request, response }) => {
+          response.status(200).send(fs.readFileSync(dir + path + "\\" + file));
         });
       } else {
         this.static(dir, path + "\\" + file);

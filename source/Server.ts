@@ -7,13 +7,14 @@ import { Response } from "./Response";
 
 type EventNames = "boot" | "booted" | "config";
 
-class Hephaestus {
+class HephaestusServer {
   private _server: http.Server | https.Server | null;
   private _events: { [key in EventNames]: () => void } = {
     boot: () => {},
     booted: () => {},
     config: () => {},
   };
+  private _exceptions: Map<string, (data: any) => void> = new Map();
 
   constructor() {
     this._server = null;
@@ -50,12 +51,21 @@ class Hephaestus {
         queryParameter
       );
       let _response = new Response(response);
-      callback(_request, _response);
+      callback({ request: _request, response: _response, application: this });
     });
   }
 
   public on(event: EventNames, callback: () => void) {
     this._events[event] = callback;
+  }
+
+  public exception(exception: string, callback: (data: any) => void) {
+    this._exceptions.set(exception, callback);
+  }
+
+  public throw(exception: string, data: any) {
+    let _exception = this._exceptions.get(exception);
+    if (_exception) _exception(data);
   }
 
   public async boot(port: number = 80) {
@@ -67,6 +77,11 @@ class Hephaestus {
     this._server.listen(port);
     this._events.booted();
   }
+
+  public getServer() {
+    return this._server;
+  }
 }
 
-export { Hephaestus };
+const Hephaestus = new HephaestusServer();
+export { Hephaestus, HephaestusServer };

@@ -26,11 +26,11 @@ Routes.get("/", (request, response) => {
 
 ## cookies
 
-This method is being used to set cookies. You can call this method mutliple times
+This method is being used to set cookies. You can call this method multiple times
 adding each cookie step by step or once passing in an object.
 
 ```ts
-Routes.get("/", (request, response) => {
+Routes.get("/", ({ request, response }) => {
   response
     .cookies({
       user: "some value",
@@ -41,11 +41,11 @@ Routes.get("/", (request, response) => {
 
 ## addHeader
 
-This method is being used to set headers. You can call this method mutliple times
+This method is being used to set headers. You can call this method multiple times
 adding each header step by step or once passing in an object.
 
 ```ts
-Routes.get("/", (request, response) => {
+Routes.get("/", ({ request, response }) => {
   response
     .addHeader({
       user: "some value",

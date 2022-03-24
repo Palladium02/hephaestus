@@ -12,19 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Hephaestus = void 0;
+exports.HephaestusServer = exports.Hephaestus = void 0;
 const http_1 = __importDefault(require("http"));
 const Routes_1 = require("./Routes");
 const Body_1 = require("./Body");
 const Request_1 = require("./Request");
 const Response_1 = require("./Response");
-class Hephaestus {
+class HephaestusServer {
     constructor() {
         this._events = {
             boot: () => { },
             booted: () => { },
             config: () => { },
         };
+        this._exceptions = new Map();
         this._server = null;
     }
     _listener(request, response) {
@@ -45,12 +46,20 @@ class Hephaestus {
                 let { callback, parameter, error } = Routes_1.Routes.getCallback(urlParts[0], method);
                 let _request = new Request_1.Request(request, (0, Body_1.parseBody)(body, request.headers["content-type"] || ""), parameter, queryParameter);
                 let _response = new Response_1.Response(response);
-                callback(_request, _response);
+                callback({ request: _request, response: _response, application: this });
             });
         });
     }
     on(event, callback) {
         this._events[event] = callback;
+    }
+    exception(exception, callback) {
+        this._exceptions.set(exception, callback);
+    }
+    throw(exception, data) {
+        let _exception = this._exceptions.get(exception);
+        if (_exception)
+            _exception(data);
     }
     boot(port = 80) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62,5 +71,10 @@ class Hephaestus {
             this._events.booted();
         });
     }
+    getServer() {
+        return this._server;
+    }
 }
+exports.HephaestusServer = HephaestusServer;
+const Hephaestus = new HephaestusServer();
 exports.Hephaestus = Hephaestus;

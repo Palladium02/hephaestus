@@ -1,22 +1,22 @@
 /// <reference types="node" />
 import http from "http";
 declare class Request {
-    private _IncomminMessage;
+    private _IncommingMessage;
     headers: http.IncomingHttpHeaders;
     cookies: {
         [key: string]: string | Error;
     };
     body: any;
-    parameter: {
+    params: {
         [key: string]: string;
     };
-    queryParameter: {
+    query: {
         [key: string]: string;
     };
     url: string;
     constructor(IncomingMessage: http.IncomingMessage, body: any, parameter: {
         [key: string]: string;
-    }, queryParamater: {
+    }, queryParameter: {
         [key: string]: string;
     });
 }
