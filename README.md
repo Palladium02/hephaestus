@@ -93,3 +93,8 @@ For example the headers, the body and much more.
 
 A webserver needs to be able to send responses. And exactly for that matter there
 is the response object.
+
+### [Application](https://github.com/Palladium02/hephaestus/blob/main/docs/application.md)
+
+The application object is the server instance itself and it exposes it's functionality.
+For example the exception system.

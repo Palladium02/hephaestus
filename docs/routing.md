@@ -55,9 +55,14 @@ behavior for an not found route.
 Routes.notFound(async () => {});
 ```
 
-Each callback has to takes one parameter the HttpContract containing the [request](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
+Each callback has to takes one parameter the HttpContract containing the
+[request](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
 and [response](https://github.com/Palladium02/hephaestus/blob/main/docs/response.md) object and
 also the application itself.
+
+## static
+
+You can also register routes for serving static files.
 
 ## Route parameter
 
