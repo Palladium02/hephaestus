@@ -11,6 +11,9 @@ class Router {
             GET: {},
             POST: {},
             PUT: {},
+            HEAD: {},
+            DELETE: {},
+            PATCH: {},
             NOT_FOUND: {
                 "404": {
                     callback: (httpContract) => {
@@ -103,6 +106,15 @@ class Router {
     }
     put(route, callback) {
         this._addRoute(route, "PUT", callback);
+    }
+    head(route, callback) {
+        this._addRoute(route, "HEAD", callback);
+    }
+    delete(route, callback) {
+        this._addRoute(route, "DELETE", callback);
+    }
+    patch(route, callback) {
+        this._addRoute(route, "PATCH", callback);
     }
     notFound(callback) {
         this._table.NOT_FOUND["404"].callback = callback;

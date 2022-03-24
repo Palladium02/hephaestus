@@ -6,7 +6,7 @@ declare type HttpContract = {
     response: Response;
     application: HephaestusServer;
 };
-declare type HttpVerb = "GET" | "POST" | "PUT" | "NOT_FOUND";
+declare type HttpVerb = "GET" | "POST" | "PUT" | "HEAD" | "DELETE" | "PATCH" | "NOT_FOUND";
 declare class Router {
     private _table;
     constructor();
@@ -22,6 +22,9 @@ declare class Router {
     get(route: string, callback: (httpContract: HttpContract) => any): void;
     post(route: string, callback: (httpContract: HttpContract) => any): void;
     put(route: string, callback: (httpContract: HttpContract) => any): void;
+    head(route: string, callback: (httpContract: HttpContract) => any): void;
+    delete(route: string, callback: (httpContract: HttpContract) => any): void;
+    patch(route: string, callback: (httpContract: HttpContract) => any): void;
     notFound(callback: (httpContract: HttpContract) => any): void;
     static(dir: string, path?: string): void;
 }

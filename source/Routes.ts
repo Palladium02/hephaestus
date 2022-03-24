@@ -8,7 +8,14 @@ type HttpContract = {
   response: Response;
   application: HephaestusServer;
 };
-type HttpVerb = "GET" | "POST" | "PUT" | "NOT_FOUND";
+type HttpVerb =
+  | "GET"
+  | "POST"
+  | "PUT"
+  | "HEAD"
+  | "DELETE"
+  | "PATCH"
+  | "NOT_FOUND";
 type RouteTree = {
   [key: string]: {
     callback?: (httpContract: HttpContract) => any;
@@ -24,6 +31,9 @@ class Router {
       GET: {},
       POST: {},
       PUT: {},
+      HEAD: {},
+      DELETE: {},
+      PATCH: {},
       NOT_FOUND: {
         "404": {
           callback: (httpContract: HttpContract) => {
@@ -130,6 +140,18 @@ class Router {
 
   public put(route: string, callback: (httpContract: HttpContract) => any) {
     this._addRoute(route, "PUT", callback);
+  }
+
+  public head(route: string, callback: (httpContract: HttpContract) => any) {
+    this._addRoute(route, "HEAD", callback);
+  }
+
+  public delete(route: string, callback: (httpContract: HttpContract) => any) {
+    this._addRoute(route, "DELETE", callback);
+  }
+
+  public patch(route: string, callback: (httpContract: HttpContract) => any) {
+    this._addRoute(route, "PATCH", callback);
   }
 
   public notFound(callback: (httpContract: HttpContract) => any) {
