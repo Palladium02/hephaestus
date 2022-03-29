@@ -20,13 +20,10 @@ const Request_1 = require("./Request");
 const Response_1 = require("./Response");
 class HephaestusServer {
     constructor() {
-        this._events = {
-            boot: () => { },
-            booted: () => { },
-            config: () => { },
-        };
-        this._exceptions = new Map();
-        this._server = null;
+        this._events = new Map();
+        this._server = http_1.default.createServer((request, response) => __awaiter(this, void 0, void 0, function* () {
+            yield this._listener(request, response);
+        }));
     }
     _listener(request, response) {
         var _a;
@@ -38,43 +35,39 @@ class HephaestusServer {
                 body.push(chunk);
             });
             request.on("end", () => {
-                let urlParts = url.split("?");
-                let queryParameter = {};
-                if (urlParts[1]) {
-                    queryParameter = Object.fromEntries(urlParts[1].split("&").map((pairs) => pairs.split("=")));
-                }
-                let { callback, parameter, error } = Routes_1.Routes.getCallback(urlParts[0], method);
-                let _request = new Request_1.Request(request, (0, Body_1.parseBody)(body, request.headers["content-type"] || ""), parameter, queryParameter);
+                let { _url, query } = parseQuerystring(url);
+                let { callback, parameter } = Routes_1.Routes.getCallback(_url, method);
+                let _request = new Request_1.Request(request, (0, Body_1.parseBody)(body, request.headers["content-type"] || ""), parameter, query);
                 let _response = new Response_1.Response(response);
                 callback({ request: _request, response: _response, application: this });
             });
         });
     }
     on(event, callback) {
-        this._events[event] = callback;
+        this._events.set(event, callback);
     }
-    exception(exception, callback) {
-        this._exceptions.set(exception, callback);
+    emit(event, data) {
+        let _event = this._events.get(event);
+        if (_event)
+            _event(data);
     }
-    throw(exception, data) {
-        let _exception = this._exceptions.get(exception);
-        if (_exception)
-            _exception(data);
-    }
-    boot(port = 80) {
-        return __awaiter(this, void 0, void 0, function* () {
-            this._events.boot();
-            this._server = http_1.default.createServer((request, response) => __awaiter(this, void 0, void 0, function* () {
-                yield this._listener(request, response);
-            }));
-            this._server.listen(port);
-            this._events.booted();
-        });
+    listen(port = 80) {
+        var _a;
+        (_a = this._server) === null || _a === void 0 ? void 0 : _a.listen(port);
     }
     getServer() {
         return this._server;
     }
 }
 exports.HephaestusServer = HephaestusServer;
+const parseQuerystring = (url) => {
+    let query = {};
+    let [_url, querystring] = url.split("?");
+    if (!querystring) {
+        return { _url, query };
+    }
+    query = Object.fromEntries(querystring.split("&").map((pair) => pair.split("=")));
+    return { _url, query };
+};
 const Hephaestus = new HephaestusServer();
 exports.Hephaestus = Hephaestus;
