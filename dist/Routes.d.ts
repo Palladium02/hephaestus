@@ -16,7 +16,6 @@ declare class Router {
         parameter: {
             [key: string]: string;
         };
-        error: string | null;
         callback: (httpContract: HttpContract) => any;
     };
     get(route: string, callback: (httpContract: HttpContract) => any): void;

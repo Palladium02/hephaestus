@@ -51,12 +51,12 @@ Hephaestus ships with built-in type declarations.
 
 The following snippet shows you how to create a Hephaestus instance and how
 to start the server. The server starts on port 80 by default. You can change that
-behavior by passing in a valid port into the boot method.
+behavior by passing in a valid port into the listen method.
 
 ```ts
 import { Hephaestus } from "hephaestus";
 
-Hephaestus.boot();
+Hephaestus.listen();
 ```
 
 ### [Routes](https://github.com/Palladium02/hephaestus/blob/main/docs/routing.md)
@@ -80,7 +80,7 @@ the entry point file you need to import the route file(s) into it.
 import { Hephaestus } from "hephaestus";
 import "./routes.ts";
 
-Hephaestus.boot();
+Hephaestus.listen();
 ```
 
 ### [Request](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)

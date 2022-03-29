@@ -87,7 +87,6 @@ class Router {
     method: HttpVerb
   ): {
     parameter: { [key: string]: string };
-    error: string | null;
     callback: (httpContract: HttpContract) => any;
   } {
     let parts = this._getParts(route);
@@ -122,12 +121,11 @@ class Router {
           return {
             parameter,
             callback: this._table["NOT_FOUND"]["404"].callback!,
-            error: "404",
           };
         }
       }
     }
-    return { parameter, callback: current[last].callback!, error: null };
+    return { parameter, callback: current[last].callback! };
   }
 
   public get(route: string, callback: (httpContract: HttpContract) => any) {
@@ -164,7 +162,7 @@ class Router {
       if (file.split(".").length === 2) {
         let route = (path + "\\" + file).replace(/\\/g, "/");
 
-        this.get(route, ({ request, response }) => {
+        this.get(route, ({ response }) => {
           response.status(200).send(fs.readFileSync(dir + path + "\\" + file));
         });
       } else {

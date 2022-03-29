@@ -91,12 +91,11 @@ class Router {
                     return {
                         parameter,
                         callback: this._table["NOT_FOUND"]["404"].callback,
-                        error: "404",
                     };
                 }
             }
         }
-        return { parameter, callback: current[last].callback, error: null };
+        return { parameter, callback: current[last].callback };
     }
     get(route, callback) {
         this._addRoute(route, "GET", callback);
@@ -124,7 +123,7 @@ class Router {
         files.forEach((file) => {
             if (file.split(".").length === 2) {
                 let route = (path + "\\" + file).replace(/\\/g, "/");
-                this.get(route, ({ request, response }) => {
+                this.get(route, ({ response }) => {
                     response.status(200).send(fs_1.default.readFileSync(dir + path + "\\" + file));
                 });
             }
