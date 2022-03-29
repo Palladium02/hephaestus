@@ -8,3 +8,4 @@ Welcome to the in depth explanation of Hephaestus. This is where your journey be
 - [Requests](https://github.com/Palladium02/hephaestus/blob/main/docs/requests.md)
 - [Responses](https://github.com/Palladium02/hephaestus/blob/main/docs/response.md)
 - [Cookies](https://github.com/Palladium02/hephaestus/blob/main/docs/cookies.md)
+- [Sockets](https://github.com/Palladium02/hephaestus/blob/main/docs/socket.md)
