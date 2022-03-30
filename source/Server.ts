@@ -7,6 +7,8 @@ import { Response } from "./Response";
 
 class HephaestusServer {
   private _server: http.Server | https.Server;
+  private _httpRedirect: http.Server | null = null;
+  private _isHttps: boolean = false;
   private _events: Map<string, (data: any) => void> = new Map();
 
   constructor() {
@@ -50,12 +52,35 @@ class HephaestusServer {
     if (_event) _event(data);
   }
 
-  public listen(port = 80) {
-    this._server?.listen(port);
+  public listen(port?: number) {
+    if (port) {
+      this._server.listen(port);
+    } else {
+      this._isHttps ? this._server.listen(433) : this._server.listen(80);
+    }
   }
 
   public getServer() {
     return this._server;
+  }
+
+  public makeHttps(options: { [key in "key" | "cert"]: string }) {
+    this._isHttps = true;
+    this._server.close();
+    this._server = https
+      .createServer(options, async (request, response) => {
+        await this._listener(request, response);
+      })
+      .listen(443);
+    this._httpRedirect = http
+      .createServer((request, response) => {
+        let url = request.url;
+        response.writeHead(301, {
+          location: url,
+        });
+        response.end();
+      })
+      .listen(80);
   }
 }
 

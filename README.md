@@ -10,7 +10,7 @@
 ## Introduction
 
 What is Hephaestus? Apart from being the greek god of blacksmiths, Hephaestus
-also is a small (13kB) library for creating webserver.
+also is a small (20kB) library for creating webserver.
 <br>
 The following README you will try to teach you the basics of this library but
 if you are interested behind almost every subheading is a link to a more in depth
