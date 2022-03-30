@@ -14,12 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HephaestusServer = exports.Hephaestus = void 0;
 const http_1 = __importDefault(require("http"));
+const https_1 = __importDefault(require("https"));
 const Routes_1 = require("./Routes");
 const Body_1 = require("./Body");
 const Request_1 = require("./Request");
 const Response_1 = require("./Response");
 class HephaestusServer {
     constructor() {
+        this._httpRedirect = null;
+        this._isHttps = false;
         this._events = new Map();
         this._server = http_1.default.createServer((request, response) => __awaiter(this, void 0, void 0, function* () {
             yield this._listener(request, response);
@@ -51,12 +54,34 @@ class HephaestusServer {
         if (_event)
             _event(data);
     }
-    listen(port = 80) {
-        var _a;
-        (_a = this._server) === null || _a === void 0 ? void 0 : _a.listen(port);
+    listen(port) {
+        if (port) {
+            this._server.listen(port);
+        }
+        else {
+            this._isHttps ? this._server.listen(433) : this._server.listen(80);
+        }
     }
     getServer() {
         return this._server;
+    }
+    makeHttps(options) {
+        this._isHttps = true;
+        this._server.close();
+        this._server = https_1.default
+            .createServer(options, (request, response) => __awaiter(this, void 0, void 0, function* () {
+            yield this._listener(request, response);
+        }))
+            .listen(443);
+        this._httpRedirect = http_1.default
+            .createServer((request, response) => {
+            let url = request.url;
+            response.writeHead(301, {
+                location: url,
+            });
+            response.end();
+        })
+            .listen(80);
     }
 }
 exports.HephaestusServer = HephaestusServer;
