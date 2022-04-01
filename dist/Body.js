@@ -35,11 +35,6 @@ const parseURLEncoded = (body) => {
         return pair.split("=");
     }));
 };
-// split on end boundary
-// split on boundary to get fields
-// split on [ 0d 0a 0a 0d ] to seperate header and actual body
-// 0d = 13; 0a = 10
-// <Buffer 00 0d 0a 0d 0a 68 6b 6a 68 6b 0d 0a 00>
 const parseMultipart = (body, boundary, endBoundary) => {
     let parsedBody = {};
     let _body = [];

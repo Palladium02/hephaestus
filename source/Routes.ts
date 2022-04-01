@@ -1,3 +1,45 @@
+/**
+ * Copyright Sean Meyer 2022. All Rights Reserved.
+ * Node module: hephaestus
+ * This file is licensed under the MIT License.
+ * License text available at https://opensource.org/license/MIT
+ *
+ * The following contains the source code for the router object for the
+ * Hephaestus framework.
+ *
+ * The Router object implements different public and private methods which will
+ * be explained in the following section.
+ *
+ * _addRoute - route (string), method (HttpVerb), callback (httpContract: HttpContract)
+ *
+ * "_addRoute" is the underlaying method for adding routes to the "_table" property.
+ * This method is being called by all the alias methods (e.g. get, post...).
+ * Adding routes is achieved by disecting the given route into multiple parts
+ * (e.g. /api/user => ["/api", "/user"]). These parts are then used to traveser the
+ * tree like structure of the routing table.
+ *
+ *
+ * _getParts - route (string)
+ *
+ * "_getParts" is being used to split a given route into it's parts.
+ *
+ *
+ * getCallback - route (string), method (HttpVerb)
+ *
+ * "getCallback" is being used on every request to find the correct callback mapped
+ * to the given route if existing. The given route is being broken into it's parts
+ * which are used then used to traverse through the routing table. If the given route
+ * is not found the 404 callback is returned. In case a given part does not exist but
+ * a route parameter at exact the same level was registered that path is taken and
+ * the parameter and it's value is being noted.
+ *
+ *
+ * static - dir (string), path (string)
+ *
+ * "static" can be used to register routes for serving static files.
+ *
+ */
+
 import fs from "fs";
 import { Request } from "./Request";
 import { Response } from "./Response";

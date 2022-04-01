@@ -6,7 +6,7 @@ class Request {
     constructor(IncomingMessage, body, parameter, queryParameter) {
         this._IncommingMessage = IncomingMessage;
         this.headers = this._IncommingMessage.headers;
-        this.cookies = Cookies_1.Cookie.parse(this.headers);
+        this.cookies = Cookies_1.Cookies.parse(this.headers);
         this.body = body;
         this.params = parameter;
         this.query = queryParameter;

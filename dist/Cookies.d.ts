@@ -1,17 +1,29 @@
 /// <reference types="node" />
 import http from "http";
-declare class Cookies {
+declare type Cookie = {
+    name: string;
+    value: string;
+    options: CookieOptions;
+};
+declare type CookieOptions = {
+    HttpOnly?: boolean;
+    Expires?: string;
+    Domain?: string;
+    Path?: string;
+    Secure?: boolean;
+    "Max-Age"?: number;
+    "Same-Site"?: SameSite;
+};
+declare type SameSite = "Strict" | "Lax" | "None";
+declare class CookieParser {
     private _secret;
-    constructor();
-    stringify(cookies: {
-        [key: string]: string;
-    }): {
-        "Set-Cookie": string;
-    };
+    serialize(cookies: Cookie[]): string[];
+    private _serializeOptions;
+    private _sign;
     parse(headers: http.IncomingHttpHeaders): {
         [key: string]: string | Error;
     };
     setSigned(secret: string): void;
 }
-declare const Cookie: Cookies;
-export { Cookie };
+declare const Cookies: CookieParser;
+export { Cookies, Cookie, CookieOptions };

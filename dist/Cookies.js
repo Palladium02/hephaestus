@@ -3,31 +3,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Cookie = void 0;
+exports.Cookies = void 0;
 const crypto_1 = __importDefault(require("crypto"));
-class Cookies {
+class CookieParser {
     constructor() {
         this._secret = "";
     }
-    stringify(cookies) {
-        let result = [];
-        Object.entries(cookies).forEach((pair) => {
-            if (this._secret === "") {
-                result.push(pair.join("="));
-            }
-            else {
-                let name = pair[0];
-                let value = pair[1];
-                let signature = crypto_1.default
-                    .createHmac("SHA256", this._secret)
-                    .update(`${value}`)
-                    .digest("base64url");
-                result.push(`${name}=${Buffer.from(value, "utf-8").toString("base64url")}.${signature}`);
-            }
+    serialize(cookies) {
+        let serializedCookies = [];
+        cookies.forEach(({ name, value, options }) => {
+            let serializedValue = `${name}=${this._sign(value)};`;
+            let serializedOptions = this._serializeOptions(options);
+            serializedCookies.push(`${serializedValue} ${serializedOptions}`);
         });
-        return {
-            "Set-Cookie": result.join(";"),
-        };
+        return serializedCookies;
+    }
+    _serializeOptions(options) {
+        let _options = [];
+        let keys = Object.keys(options);
+        let regex = new RegExp(/(Mon|Tue|Wed|Thu|Fri|Sat|Sun){1}\,\s{1}\d{2}\s{1}(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec){1}\s{1}\d{4}\s{1}\d{2}\:\d{2}\:\d{2}\s[A-Z]+/gm);
+        keys.forEach((option) => {
+            if (option === "HttpOnly" || option === "Secure") {
+                _options.push(option);
+                return;
+            }
+            if (option === "Expires" && !regex.test(options[option])) {
+                throw new TypeError("Date does not match UTC date format.");
+            }
+            _options.push(`${option}=${options[option]}`);
+        });
+        return _options.join("; ");
+    }
+    _sign(value) {
+        if (this._secret === "")
+            return value;
+        let signature = crypto_1.default
+            .createHmac("SHA256", this._secret)
+            .update(value)
+            .digest("base64url");
+        return `${Buffer.from(value, "utf-8").toString("base64url")}.${signature}`;
     }
     parse(headers) {
         let cookiesHeader = headers["cookie"];
@@ -67,5 +81,5 @@ class Cookies {
         this._secret = secret;
     }
 }
-const Cookie = new Cookies();
-exports.Cookie = Cookie;
+const Cookies = new CookieParser();
+exports.Cookies = Cookies;

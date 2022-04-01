@@ -1,5 +1,6 @@
 /// <reference types="node" />
 import http from "http";
+import { CookieOptions } from "./Cookies";
 declare class Response {
     private _response;
     private _headers;
@@ -10,10 +11,7 @@ declare class Response {
     addHeader(headers: {
         [key: string]: any;
     }): this;
-    cookie(name: string, value: string): this;
-    cookie(cookies: {
-        [key: string]: string;
-    }): this;
+    cookie(name: string, value: string, options: CookieOptions): this;
     status(code: number): this;
     send(data: any): void;
 }

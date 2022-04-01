@@ -1,3 +1,55 @@
+/**
+ * Copyright Sean Meyer 2022. All Rights Reserved.
+ * Node module: hephaestus
+ * This file is licensed under the MIT License.
+ * License text available at https://opensource.org/license/MIT
+ *
+ * The following file contains the source code for the Hephaestus server for the
+ * Hephaestus framework.
+ *
+ * The HephaestusServer object implements different public and private methods which will
+ * be explained in the following section.
+ *
+ * _listener - request (http.IncommingMessage), response (http.ServerResponse)
+ *
+ * "_listener" is a method that will be called every time a new request comes in.
+ * In this method everything is being put together, e.g. getting the body or invoking
+ * the querystring parser.
+ *
+ *
+ * on - event (string), callback ((data: any) => void)
+ *
+ * "on" can be used to add events to the HephaestusServer instance. This is achieved
+ * by mapping an event name and a callback, that mapping will be stored in the
+ * private "_events" property.
+ *
+ *
+ * emit - event (string), data (any)
+ *
+ * "emit" is used to retrieve a certain callback mapped to the given event.
+ *
+ *
+ * listen - port? (number)
+ *
+ * "listen" is being used to ultimately start the server. Under the hood there is
+ * more than just calling the http.Server.listen method. "listen" checks wether a
+ * port was given and if not if the server was set to http or https. Based on that
+ * the server will then be started on the standard port for http (80) or https (443).
+ *
+ *
+ * getServer
+ *
+ * The purpose of "getServer" is to expose the private "_server" property. This
+ * can be used to add "socket.io" to the developers project.
+ *
+ *
+ * makeHttps - options (object)
+ *
+ * "makeHttps" is used to create an https server. It will overwrite the default
+ * http server with an https server. It will also create a new http server that
+ * will redirect every request to the https server with a code of 301.
+ */
+
 import http from "http";
 import https from "https";
 import { HttpVerb, Routes } from "./Routes";

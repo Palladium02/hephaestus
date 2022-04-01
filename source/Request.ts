@@ -1,5 +1,18 @@
+/**
+ * Copyright Sean Meyer 2022. All Rights Reserved.
+ * Node module: hephaestus
+ * This file is licensed under the MIT License.
+ * License text available at https://opensource.org/license/MIT
+ *
+ * The following file contains the source code for the request object for the
+ * Hephaestus framework.
+ *
+ * The Request object only serves as container for diffrent properties that
+ * should be available to the developer.
+ */
+
 import http from "http";
-import { Cookie } from "./Cookies";
+import { Cookies } from "./Cookies";
 
 class Request {
   private _IncommingMessage: http.IncomingMessage;
@@ -17,7 +30,7 @@ class Request {
   ) {
     this._IncommingMessage = IncomingMessage;
     this.headers = this._IncommingMessage.headers;
-    this.cookies = Cookie.parse(this.headers);
+    this.cookies = Cookies.parse(this.headers);
     this.body = body;
     this.params = parameter;
     this.query = queryParameter;

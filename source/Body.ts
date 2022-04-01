@@ -1,3 +1,51 @@
+/**
+ * Copyright Sean Meyer 2022. All Rights Reserved.
+ * Node module: hephaestus
+ * This file is licensed under the MIT License.
+ * License text available at https://opensource.org/license/MIT
+ *
+ * The following file contains the source code for the router object for the
+ * Hephaestus framework.
+ *
+ * This file implements different functions which will be explained in the following
+ * section.
+ *
+ * parseBody - body (any[]), contentType (string)
+ *
+ * "parseBody" is being called on every request and decides based on the content
+ * type how to parse an incomming body.
+ *
+ *
+ * makeString - body (any[])
+ *
+ * "makeString" creates a stringifiedd body based on a array.
+ *
+ *
+ * parseURLEncoded - body (string)
+ *
+ * "parseURLEncoded" is being used to parse bodies that has be encoded as
+ * "content-type/url-encoded".
+ *
+ *
+ * parseMultipart - body (any[]), boundary (string), endBoundary (string)
+ *
+ * "parseMultipart" is being used to parse bodies that have been encoded as
+ * "multipart/form-data". To achieve that the body is casted into one big array
+ * of numbers to avoid loosing information when converting to uft-8 string.
+ * That array then is joined by $ as delimiter. To find the single parts of
+ * the body the newly created string is split on the endBoundary and then split
+ * on the normal boundary.
+ * To get the header and the content of each part the parts are split on
+ * the pattern [ 0d, 0a, 0d, 0a ] or "$13$10$13$10$" which is equal to "\r\n\r\n".
+ * From there the header is being parsed with the "parseMultipartHeaders".
+ *
+ *
+ * parseMultipartHeaders - headers (string)
+ *
+ * "parseMultipartHeaders" is being used to parse the headers of each
+ * field of a multipart request.
+ */
+
 const parseBody = (body: any[], contentType: string) => {
   let boundary = "--";
   let endBoundary = "--";
