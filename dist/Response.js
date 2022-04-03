@@ -25,6 +25,22 @@ class Response {
         });
         return this;
     }
+    clearCookie(name) {
+        for (let i = 0; i < this._cookies.length; i++) {
+            if (this._cookies[i].name === name) {
+                this._cookies[i].options.Expires = "Thu, 01 Jan 1970 00:00:00 GMT";
+                return;
+            }
+        }
+        this._cookies.push({
+            name,
+            value: "",
+            options: {
+                Expires: "Thu, 01 Jan 1970 00:00:00 GMT",
+            },
+        });
+        return this;
+    }
     status(code) {
         this._status = code;
         return this;

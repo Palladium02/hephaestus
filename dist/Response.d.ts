@@ -12,6 +12,7 @@ declare class Response {
         [key: string]: any;
     }): this;
     cookie(name: string, value: string, options: CookieOptions): this;
+    clearCookie(name: string): this | undefined;
     status(code: number): this;
     send(data: any): void;
 }

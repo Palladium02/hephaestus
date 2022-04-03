@@ -55,7 +55,10 @@ class Response {
   addHeader(name: string, value: any): this;
   addHeader(headers: { [key: string]: any }): this;
 
-  addHeader(singleOrMultiple: string | { [key: string]: any }, value?: any) {
+  public addHeader(
+    singleOrMultiple: string | { [key: string]: any },
+    value?: any
+  ) {
     if (typeof singleOrMultiple === "string") {
       this._headers = {
         ...this._headers,
@@ -70,7 +73,7 @@ class Response {
     return this;
   }
 
-  cookie(name: string, value: string, options: CookieOptions) {
+  public cookie(name: string, value: string, options: CookieOptions) {
     this._cookies.push({
       name,
       value,
@@ -79,7 +82,24 @@ class Response {
     return this;
   }
 
-  status(code: number) {
+  public clearCookie(name: string) {
+    for (let i = 0; i < this._cookies.length; i++) {
+      if (this._cookies[i].name === name) {
+        this._cookies[i].options.Expires = "Thu, 01 Jan 1970 00:00:00 GMT";
+        return;
+      }
+    }
+    this._cookies.push({
+      name,
+      value: "",
+      options: {
+        Expires: "Thu, 01 Jan 1970 00:00:00 GMT",
+      },
+    });
+    return this;
+  }
+
+  public status(code: number) {
     this._status = code;
     return this;
   }
