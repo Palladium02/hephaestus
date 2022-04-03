@@ -61,6 +61,7 @@ class HephaestusServer {
         else {
             this._isHttps ? this._server.listen(433) : this._server.listen(80);
         }
+        this.emit("started", { date: Date.now() });
     }
     getServer() {
         return this._server;
@@ -68,11 +69,9 @@ class HephaestusServer {
     makeHttps(options) {
         this._isHttps = true;
         this._server.close();
-        this._server = https_1.default
-            .createServer(options, (request, response) => __awaiter(this, void 0, void 0, function* () {
+        this._server = https_1.default.createServer(options, (request, response) => __awaiter(this, void 0, void 0, function* () {
             yield this._listener(request, response);
-        }))
-            .listen(443);
+        }));
         this._httpRedirect = http_1.default
             .createServer((request, response) => {
             let url = request.url;
