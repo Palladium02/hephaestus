@@ -95,7 +95,7 @@ class HephaestusServer {
     });
   }
 
-  public on(event: string, callback: () => void) {
+  public on(event: string, callback: (data: any) => void) {
     this._events.set(event, callback);
   }
 

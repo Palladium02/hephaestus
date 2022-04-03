@@ -8,7 +8,7 @@ declare class HephaestusServer {
     private _events;
     constructor();
     private _listener;
-    on(event: string, callback: () => void): void;
+    on(event: string, callback: (data: any) => void): void;
     emit(event: string, data: any): void;
     listen(port?: number): void;
     getServer(): http.Server | https.Server;
