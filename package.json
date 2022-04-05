@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "npx tsc -p ./tsconfig.json"
+    "build": "npx tsc -p ./tsconfig.json",
+    "test:headers": "node __tests__/header.test.js"
   },
   "author": "Sean Meyer",
   "license": "MIT",
