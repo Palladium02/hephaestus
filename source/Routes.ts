@@ -67,8 +67,10 @@ type RouteTree = {
 
 class Router {
   private _table: { [key in HttpVerb]: RouteTree };
+  private _group: string[];
 
   constructor() {
+    this._group = [];
     this._table = {
       GET: {},
       POST: {},
@@ -91,7 +93,7 @@ class Router {
     method: HttpVerb,
     callback: (httpContract: HttpContract) => any
   ) {
-    let parts = this._getParts(route);
+    let parts = [...this._group, ...this._getParts(route)];
     let current = this._table[method]!;
     let last: string = "";
     parts.forEach((part, index) => {
@@ -196,6 +198,12 @@ class Router {
 
   public notFound(callback: (httpContract: HttpContract) => any) {
     this._table.NOT_FOUND["404"].callback = callback;
+  }
+
+  public group(path: string, callback: () => void) {
+    this._group.push(...this._getParts(path));
+    callback();
+    this._group.pop();
   }
 
   public static(

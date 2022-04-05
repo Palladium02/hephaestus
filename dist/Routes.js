@@ -7,6 +7,7 @@ exports.Routes = void 0;
 const fs_1 = __importDefault(require("fs"));
 class Router {
     constructor() {
+        this._group = [];
         this._table = {
             GET: {},
             POST: {},
@@ -24,7 +25,7 @@ class Router {
         };
     }
     _addRoute(route, method, callback) {
-        let parts = this._getParts(route);
+        let parts = [...this._group, ...this._getParts(route)];
         let current = this._table[method];
         let last = "";
         parts.forEach((part, index) => {
@@ -117,6 +118,11 @@ class Router {
     }
     notFound(callback) {
         this._table.NOT_FOUND["404"].callback = callback;
+    }
+    group(path, callback) {
+        this._group.push(...this._getParts(path));
+        callback();
+        this._group.pop();
     }
     static(dir, options = { path: "", prefix: "" }) {
         let { path, prefix } = options;

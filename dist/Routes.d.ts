@@ -9,6 +9,7 @@ declare type HttpContract = {
 declare type HttpVerb = "GET" | "POST" | "PUT" | "HEAD" | "DELETE" | "PATCH" | "NOT_FOUND";
 declare class Router {
     private _table;
+    private _group;
     constructor();
     private _addRoute;
     private _getParts;
@@ -25,6 +26,7 @@ declare class Router {
     delete(route: string, callback: (httpContract: HttpContract) => any): void;
     patch(route: string, callback: (httpContract: HttpContract) => any): void;
     notFound(callback: (httpContract: HttpContract) => any): void;
+    group(path: string, callback: () => void): void;
     static(dir: string, options?: {
         [key in "prefix" | "path"]: string;
     }): void;
