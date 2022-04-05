@@ -59,7 +59,7 @@ class HephaestusServer {
             this._server.listen(port);
         }
         else {
-            this._isHttps ? this._server.listen(433) : this._server.listen(80);
+            this._isHttps ? this._server.listen(443) : this._server.listen(80);
         }
         this.emit("started", { date: Date.now() });
     }
