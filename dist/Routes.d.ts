@@ -25,7 +25,9 @@ declare class Router {
     delete(route: string, callback: (httpContract: HttpContract) => any): void;
     patch(route: string, callback: (httpContract: HttpContract) => any): void;
     notFound(callback: (httpContract: HttpContract) => any): void;
-    static(dir: string, path?: string): void;
+    static(dir: string, options?: {
+        [key in "prefix" | "path"]: string;
+    }): void;
 }
 export declare const Routes: Router;
 export { HttpVerb };

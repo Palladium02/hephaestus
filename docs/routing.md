@@ -62,7 +62,18 @@ also the application itself.
 
 ## static
 
-You can also register routes for serving static files.
+You can also register routes for serving static files. In the example `__dirname`
+reffers to the directory that should be exposed. `prefix` can be used to customize
+the route to the file.
+
+```ts
+import { Routes } from "hephaestus";
+
+Routes.static(__dirname, {
+  path: "",
+  prefix: "",
+});
+```
 
 ## Route parameter
 

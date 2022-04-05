@@ -118,17 +118,21 @@ class Router {
     notFound(callback) {
         this._table.NOT_FOUND["404"].callback = callback;
     }
-    static(dir, path = "") {
+    static(dir, options = { path: "", prefix: "" }) {
+        let { path, prefix } = options;
         let files = fs_1.default.readdirSync(dir + path);
         files.forEach((file) => {
-            if (file.split(".").length === 2) {
-                let route = (path + "\\" + file).replace(/\\/g, "/");
+            if (file.split(".").length >= 2) {
+                let route = (prefix + path + "\\" + file).replace(/\\/g, "/");
                 this.get(route, ({ response }) => {
                     response.status(200).send(fs_1.default.readFileSync(dir + path + "\\" + file));
                 });
             }
             else {
-                this.static(dir, path + "\\" + file);
+                this.static(dir, {
+                    prefix,
+                    path: path + "\\" + file,
+                });
             }
         });
     }
