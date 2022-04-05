@@ -201,9 +201,13 @@ class Router {
   }
 
   public group(path: string, callback: () => void) {
+    console.log(this._getParts(path));
     this._group.push(...this._getParts(path));
+    console.log(this._group);
     callback();
-    this._group.pop();
+    for (let i = 0; i < this._getParts(path).length; i++) {
+      this._group.pop();
+    }
   }
 
   public static(
@@ -215,8 +219,18 @@ class Router {
     files.forEach((file) => {
       if (file.split(".").length >= 2) {
         let route = (prefix + path + "\\" + file).replace(/\\/g, "/");
-        this.get(route, ({ response }) => {
-          response.status(200).send(fs.readFileSync(dir + path + "\\" + file));
+        this.get(route, ({ response, application }) => {
+          if (fs.existsSync(dir + path + "\\" + file)) {
+            response
+              .status(200)
+              .send(fs.readFileSync(dir + path + "\\" + file));
+          } else {
+            application.emit("Exception.static.notFound", {
+              file,
+              date: Date.now(),
+            });
+            response.status(404).send(`No such file: ${file}`);
+          }
         });
       } else {
         this.static(dir, {

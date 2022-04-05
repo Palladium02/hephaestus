@@ -120,9 +120,13 @@ class Router {
         this._table.NOT_FOUND["404"].callback = callback;
     }
     group(path, callback) {
+        console.log(this._getParts(path));
         this._group.push(...this._getParts(path));
+        console.log(this._group);
         callback();
-        this._group.pop();
+        for (let i = 0; i < this._getParts(path).length; i++) {
+            this._group.pop();
+        }
     }
     static(dir, options = { path: "", prefix: "" }) {
         let { path, prefix } = options;
@@ -130,8 +134,19 @@ class Router {
         files.forEach((file) => {
             if (file.split(".").length >= 2) {
                 let route = (prefix + path + "\\" + file).replace(/\\/g, "/");
-                this.get(route, ({ response }) => {
-                    response.status(200).send(fs_1.default.readFileSync(dir + path + "\\" + file));
+                this.get(route, ({ response, application }) => {
+                    if (fs_1.default.existsSync(dir + path + "\\" + file)) {
+                        response
+                            .status(200)
+                            .send(fs_1.default.readFileSync(dir + path + "\\" + file));
+                    }
+                    else {
+                        application.emit("Exception.static.notFound", {
+                            file,
+                            date: Date.now(),
+                        });
+                        response.status(404).send(`No such file: ${file}`);
+                    }
                 });
             }
             else {
