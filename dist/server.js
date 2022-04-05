@@ -16,9 +16,11 @@ exports.HephaestusServer = exports.Hephaestus = void 0;
 const http_1 = __importDefault(require("http"));
 const https_1 = __importDefault(require("https"));
 const Routes_1 = require("./Routes");
-const Body_1 = require("./Body");
+const Body_1 = require("./Parser/Body");
+const Querystring_1 = require("./Parser/Querystring");
 const Request_1 = require("./Request");
 const Response_1 = require("./Response");
+const SecureHeaders_1 = require("./SecureHeaders");
 class HephaestusServer {
     constructor() {
         this._httpRedirect = null;
@@ -38,10 +40,11 @@ class HephaestusServer {
                 body.push(chunk);
             });
             request.on("end", () => {
-                let { _url, query } = parseQuerystring(url);
+                let { _url, query } = (0, Querystring_1.parseQuerystring)(url);
                 let { callback, parameter } = Routes_1.Routes.getCallback(_url, method);
                 let _request = new Request_1.Request(request, (0, Body_1.parseBody)(body, request.headers["content-type"] || ""), parameter, query);
                 let _response = new Response_1.Response(response);
+                _response.addHeader(SecureHeaders_1.SecurityHeaders.getHeaders());
                 callback({ request: _request, response: _response, application: this });
             });
         });
@@ -84,14 +87,5 @@ class HephaestusServer {
     }
 }
 exports.HephaestusServer = HephaestusServer;
-const parseQuerystring = (url) => {
-    let query = {};
-    let [_url, querystring] = url.split("?");
-    if (!querystring) {
-        return { _url, query };
-    }
-    query = Object.fromEntries(querystring.split("&").map((pair) => pair.split("=")));
-    return { _url, query };
-};
 const Hephaestus = new HephaestusServer();
 exports.Hephaestus = Hephaestus;

@@ -53,9 +53,11 @@
 import http from "http";
 import https from "https";
 import { HttpVerb, Routes } from "./Routes";
-import { parseBody } from "./Body";
+import { parseBody } from "./Parser/Body";
+import { parseQuerystring } from "./Parser/Querystring";
 import { Request } from "./Request";
 import { Response } from "./Response";
+import { SecurityHeaders } from "./SecureHeaders";
 
 class HephaestusServer {
   private _server: http.Server | https.Server;
@@ -91,6 +93,7 @@ class HephaestusServer {
         query
       );
       let _response = new Response(response);
+      _response.addHeader(SecurityHeaders.getHeaders());
       callback({ request: _request, response: _response, application: this });
     });
   }
@@ -135,23 +138,6 @@ class HephaestusServer {
       .listen(80);
   }
 }
-
-const parseQuerystring = (
-  url: string
-): { _url: string; query: { [key: string]: string } } => {
-  let query = {};
-  let [_url, querystring] = url.split("?");
-
-  if (!querystring) {
-    return { _url, query };
-  }
-
-  query = Object.fromEntries(
-    querystring.split("&").map((pair) => pair.split("="))
-  );
-
-  return { _url, query };
-};
 
 const Hephaestus = new HephaestusServer();
 export { Hephaestus, HephaestusServer };

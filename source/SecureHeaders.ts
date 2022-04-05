@@ -41,6 +41,32 @@ type XXSSProtection = {
   report?: string;
 };
 
+type ContentSecuritySrc = "'self'" | "'none'" | "*" | string;
+
+type ContentSecurity = {
+  "default-src": ContentSecuritySrc[];
+  "script-src": ContentSecuritySrc[];
+  "style-src": ContentSecuritySrc[];
+  "img-src": ContentSecuritySrc[];
+  "connect-src": ContentSecuritySrc[];
+  "font-src": ContentSecuritySrc[];
+  "object-src": ContentSecuritySrc[];
+  "media-src": ContentSecuritySrc[];
+  "frame-src": ContentSecuritySrc[];
+  sandbox: string;
+  "report-uri": string[];
+  "child-src": ContentSecuritySrc[];
+  "form-action": string[];
+  "frame-ancestors": string[];
+  "plugin-types": string[];
+  "base-uri": string[];
+  "report-to": string;
+  "worker-src": ContentSecuritySrc[];
+  "manifest-src": ContentSecuritySrc[];
+  "prefetch-src": ContentSecuritySrc[];
+  "navigate-to": string[];
+};
+
 type OptionFlags<T> = unknown & (keyof T)[];
 
 class SecureHeaders {
