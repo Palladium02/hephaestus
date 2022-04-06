@@ -1,7 +1,7 @@
 /// <reference types="node" />
 import http from "http";
 import https from "https";
-import "./Logger";
+import "../Logger";
 declare class HephaestusServer {
     private _server;
     private _httpRedirect;

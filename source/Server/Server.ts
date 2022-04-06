@@ -52,18 +52,20 @@
 
 import http from "http";
 import https from "https";
-import { HttpVerb, Routes } from "./Routes";
-import { parseBody } from "./Parser/Body";
-import { parseQuerystring } from "./Parser/Querystring";
-import { Request } from "./Request";
-import { Response } from "./Response";
-import { SecurityHeaders } from "./SecureHeaders";
+import { HttpVerb, Routes } from "../Routes";
+import { parseBody } from "../Parser/Body";
+import { parseQuerystring } from "../Parser/Querystring";
+import { Request } from "../Request";
+import { Response } from "../Response";
+import { SecurityHeaders } from "../SecureHeaders";
+import { Expections } from "./Exceptions";
+import "../Logger";
 
 class HephaestusServer {
   private _server: http.Server | https.Server;
   private _httpRedirect: http.Server | null = null;
   private _isHttps: boolean = false;
-  private _events: Map<string, (data: any) => void> = new Map();
+  private _events: Map<string, (data: any) => void> = new Map(Expections);
 
   constructor() {
     this._server = http.createServer(async (request, response) => {

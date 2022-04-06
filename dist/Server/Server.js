@@ -15,18 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HephaestusServer = exports.Hephaestus = void 0;
 const http_1 = __importDefault(require("http"));
 const https_1 = __importDefault(require("https"));
-const Routes_1 = require("./Routes");
-const Body_1 = require("./Parser/Body");
-const Querystring_1 = require("./Parser/Querystring");
-const Request_1 = require("./Request");
-const Response_1 = require("./Response");
-const SecureHeaders_1 = require("./SecureHeaders");
-require("./Logger");
+const Routes_1 = require("../Routes");
+const Body_1 = require("../Parser/Body");
+const Querystring_1 = require("../Parser/Querystring");
+const Request_1 = require("../Request");
+const Response_1 = require("../Response");
+const SecureHeaders_1 = require("../SecureHeaders");
+const Exceptions_1 = require("./Exceptions");
+require("../Logger");
 class HephaestusServer {
     constructor() {
         this._httpRedirect = null;
         this._isHttps = false;
-        this._events = new Map();
+        this._events = new Map(Exceptions_1.Expections);
         this._server = http_1.default.createServer((request, response) => __awaiter(this, void 0, void 0, function* () {
             yield this._listener(request, response);
         }));
