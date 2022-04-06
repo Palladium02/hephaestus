@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Routes = void 0;
 const fs_1 = __importDefault(require("fs"));
+const Server_1 = require("./Server/Server");
 class Router {
     constructor() {
         this._group = [];
@@ -25,6 +26,14 @@ class Router {
         };
     }
     _addRoute(route, method, callback) {
+        let routeRegex = new RegExp(/((\/(\:)?[a-zA-Z]+)|\/)/gm);
+        if (!routeRegex.test(route)) {
+            Server_1.Hephaestus.emit("Exceptions.routes.malformed", {
+                route,
+                date: Date.now(),
+            });
+            return;
+        }
         let parts = [...this._group, ...this._getParts(route)];
         let current = this._table[method];
         let last = "";
@@ -120,9 +129,7 @@ class Router {
         this._table.NOT_FOUND["404"].callback = callback;
     }
     group(path, callback) {
-        console.log(this._getParts(path));
         this._group.push(...this._getParts(path));
-        console.log(this._group);
         callback();
         for (let i = 0; i < this._getParts(path).length; i++) {
             this._group.pop();

@@ -1,6 +1,6 @@
 import { Request } from "./Request";
 import { Response } from "./Response";
-import { HephaestusServer } from "./Server";
+import { HephaestusServer } from "./Server/Server";
 declare type HttpContract = {
     request: Request;
     response: Response;

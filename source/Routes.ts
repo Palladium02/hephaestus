@@ -43,7 +43,7 @@
 import fs from "fs";
 import { Request } from "./Request";
 import { Response } from "./Response";
-import { HephaestusServer } from "./Server";
+import { Hephaestus, HephaestusServer } from "./Server/Server";
 
 type HttpContract = {
   request: Request;
@@ -93,6 +93,14 @@ class Router {
     method: HttpVerb,
     callback: (httpContract: HttpContract) => any
   ) {
+    let routeRegex = new RegExp(/((\/(\:)?[a-zA-Z]+)|\/)/gm);
+    if (!routeRegex.test(route)) {
+      Hephaestus.emit("Exceptions.routes.malformed", {
+        route,
+        date: Date.now(),
+      });
+      return;
+    }
     let parts = [...this._group, ...this._getParts(route)];
     let current = this._table[method]!;
     let last: string = "";
@@ -201,9 +209,7 @@ class Router {
   }
 
   public group(path: string, callback: () => void) {
-    console.log(this._getParts(path));
     this._group.push(...this._getParts(path));
-    console.log(this._group);
     callback();
     for (let i = 0; i < this._getParts(path).length; i++) {
       this._group.pop();
